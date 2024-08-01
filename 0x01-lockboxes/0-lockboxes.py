@@ -1,24 +1,34 @@
 #!/usr/bin/python3
-'''
-    Pascal's Triangle.
-'''
+
+""" Lockboxes """
 
 
-def pascal_triangle(n):
-    '''
-        Function to draw Pascal's Triangle.
-    '''
-    if n <= 0:
-        return ([])
-    if n == 1:
-        return [[1]]
-    if n == 2:
-        return [[1], [1, 1]]
-    triangle = [[1], [1, 1]]
-    for i in range(2, n):
-        row = [1]
-        for j in range(1, i):
-            row.append(triangle[i-1][j-1] + triangle[i-1][j])
-        row.append(1)
-        triangle.append(row)
-    return triangle
+def canUnlockAll(boxes):
+    """
+    - boxes is a list of lists
+    - A key with the same number as a box opens that box
+    - You can assume all keys will be positive integers
+    - The first box boxes[0] is unlocked
+    - Return True if all boxes can be opened, else return False
+    """
+    canUnlockAll = False
+    keys = {0: True}
+    n_boxes = len(boxes)
+    while(True):
+
+        n_keys = len(keys)
+
+        for i in range(len(boxes)):
+            if boxes[i] and keys.get(i, False):
+                for j in boxes[i]:
+                    if j < n_boxes:
+                        keys[j] = True
+                    boxes[i] = None
+
+        if not(len(keys) > n_keys):
+            break
+
+    if n_keys == len(boxes):
+        canUnlockAll = True
+
+    return canUnlockAll
